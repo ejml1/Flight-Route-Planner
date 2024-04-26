@@ -12,6 +12,14 @@ public class Coordinate {
         this.neighbours = new ArrayList<Coordinate>();
     }
 
+    public void addNeighbour(Coordinate neighbour) {
+        this.neighbours.add(neighbour);
+    }
+
+    public ArrayList<Coordinate> getNeighbours() {
+        return this.neighbours;
+    }
+
     public String toString() {
         return "(" + this.parallel + ":" + this.angle + ")";
     }
