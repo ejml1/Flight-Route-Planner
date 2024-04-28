@@ -1,4 +1,5 @@
 import java.util.Queue;
+import java.util.Stack;
 import java.util.LinkedList;
 
 /**
@@ -126,6 +127,8 @@ public class P3main {
 			BFS.treeSearch(world, frontier);
 			break;
 		case "DFS": //run DFS
+			Stack<Node> frontierDFS = new Stack<Node>();
+			DFS.treeSearch(world, frontierDFS);
 			break;  
 		case "BestF": //run BestF
 			break;
