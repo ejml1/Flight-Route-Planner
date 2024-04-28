@@ -1,3 +1,4 @@
+package main;
 import java.util.TreeSet;
 
 public class Coordinate implements Comparable<Coordinate>{
