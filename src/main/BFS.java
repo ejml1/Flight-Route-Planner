@@ -20,7 +20,6 @@ public class BFS {
 
         LinkedList<String> frontierString = new LinkedList<String>();
         frontierString.add(initialNode.getState().toString());
-        // System.out.println(frontierToString(frontierString));
 
         Set<Coordinate> explored = new HashSet<Coordinate>();
         do
@@ -48,6 +47,7 @@ public class BFS {
             else
             {
                 TreeSet<Node> successors = expand(node, frontier, explored, inFrontier);
+                // Add successors in ascending order
                 for (Node state : successors)
                 {
                     frontier.add(state);
@@ -74,10 +74,16 @@ public class BFS {
         return successors;
     }
 
+    /**
+     * Convert the frontierString to a string
+     * @param frontierString A LinkedList that contains the states of the nodes in the frontier
+     * @return A string representation of the frontierString
+     */
     private static String frontierToString(LinkedList<String> frontierString)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
+        // Look at the frontierString in ascending order
         for (String s : frontierString)
         {
             sb.append(s);

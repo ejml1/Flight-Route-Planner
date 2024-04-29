@@ -1,6 +1,9 @@
 package main;
 import java.util.HashMap;
 
+/**
+ * This class is a representation of the problem's world
+ */
 public class World {
 
     private int worldSize;
@@ -41,6 +44,11 @@ public class World {
 
     }
 
+    /**
+     * Given a coordinate, add its viable neighbours to the Coordinate object based on the World's constraints
+     * @param parallel parallel
+     * @param angle angle
+     */
     private void addNeighbours(int parallel, int angle) {
         Coordinate coordinate = this.coordinates.get(getCoordinateString(parallel, angle));
 

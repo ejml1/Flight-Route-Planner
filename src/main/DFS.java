@@ -20,7 +20,6 @@ public class DFS {
 
         LinkedList<String> frontierString = new LinkedList<String>();
         frontierString.add(initialNode.getState().toString());
-        // System.out.println(frontierToString(frontierString));
 
         Set<Coordinate> explored = new HashSet<Coordinate>();
         do
@@ -48,6 +47,7 @@ public class DFS {
             else
             {
                 TreeSet<Node> successors = expand(node, frontier, explored, inFrontier);
+                // Add successors in descending order
                 for (int i = successors.size() - 1; i >= 0; i--)
                 {
                     Node state = successors.pollLast();
@@ -75,10 +75,16 @@ public class DFS {
         return successors;
     }
 
+    /**
+     * Convert the frontierString to a string
+     * @param frontierString A LinkedList that contains the states of the nodes in the frontier
+     * @return A string representation of the frontierString
+     */
     private static String frontierToString(LinkedList<String> frontierString)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
+        // Look at the frontierString in reverse order
         for (int i = frontierString.size() - 1; i >= 0; i--)
         {
             sb.append(frontierString.get(i));

@@ -28,10 +28,8 @@ public class GeneralSearchAlgorithm {
     public static double cost(Coordinate s1, Coordinate s2)
     {
         int parallel1 = s1.getParallel();
-        int angle1 = s1.getAngle();
 
         int parallel2 = s2.getParallel();
-        int angle2 = s2.getAngle();
 
         if (Math.abs(parallel1 - parallel2)  == 1)
             return 1;
