@@ -40,8 +40,14 @@ public class World {
 
         int goalParallel = Integer.parseInt(goal.split(":")[0]);
         int goalAngle = Integer.parseInt(goal.split(":")[1]);
-        this.goal = this.coordinates.get(getCoordinateString(goalParallel, goalAngle));
 
+        /*
+         * If the goal is the origin (0: any angle), then create a dummy coordinate at the origin (0:0) that is not added to the HashMap of coordinates
+         */
+        if (goalParallel != 0)
+            this.goal = this.coordinates.get(getCoordinateString(goalParallel, goalAngle));
+        else
+            this.goal = new Coordinate(0, 0);
     }
 
     /**
