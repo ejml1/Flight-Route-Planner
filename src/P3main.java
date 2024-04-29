@@ -2,11 +2,14 @@ import java.util.Queue;
 import java.util.Stack;
 
 import main.BFS;
+import main.BestF;
+import main.BestFNode;
 import main.DFS;
 import main.Node;
 import main.World;
 
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 /**
  * 
@@ -137,6 +140,8 @@ public class P3main {
 			DFS.treeSearch(world, frontierDFS);
 			break;  
 		case "BestF": //run BestF
+			PriorityQueue<BestFNode> frontierBestF = new PriorityQueue<BestFNode>();
+			BestF.search(world, frontierBestF);
 			break;
 		case "AStar": //run AStar
 			break;

@@ -22,6 +22,9 @@ public class BestF {
         LinkedList<String> frontierString = new LinkedList<String>();
         frontierString.add(initialNode.getState().toString());
 
+        LinkedList<String> frontierScoreString = new LinkedList<String>();
+        frontierScoreString.add(String.format("%.3f", initialNode.getFCost()));
+
         Set<Coordinate> explored = new HashSet<Coordinate>();
         do
         {         
@@ -31,10 +34,12 @@ public class BestF {
                 System.out.println(nExplored);
                 return;
             }
-            System.out.println(frontierToString(frontierString));
+            System.out.println(frontierToString(frontierString, frontierScoreString));
 
             BestFNode node = frontier.remove();
             frontierString.removeFirst();
+
+            frontierScoreString.removeFirst();
 
             explored.add(node.getState());
             nExplored++;
@@ -54,6 +59,8 @@ public class BestF {
                     frontier.add(state);
                     inFrontier.add(state.getState());
                     frontierString.add(state.getState().toString());
+
+                    frontierScoreString.add(String.format("%.3f", state.getFCost()));
                 }
                 
             }
@@ -78,16 +85,19 @@ public class BestF {
     /**
      * Convert the frontierString to a string
      * @param frontierString A LinkedList that contains the states of the nodes in the frontier
+     * @param frontierScoreString A LinkedList that contains the f-cost of the nodes in the frontier
      * @return A string representation of the frontierString
      */
-    private static String frontierToString(LinkedList<String> frontierString)
+    private static String frontierToString(LinkedList<String> frontierString, LinkedList<String> frontierScoreString)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         // Look at the frontierString in ascending order
-        for (String s : frontierString)
+        for (int i = 0; i < frontierString.size(); i++)
         {
-            sb.append(s);
+            sb.append(frontierString.get(i));
+            sb.append(",");
+            sb.append(frontierScoreString.get(i));
             sb.append(",");
         }
         sb.deleteCharAt(sb.length() - 1);
