@@ -83,14 +83,9 @@ public class BestF {
         sb.append("[");
         while (!frontierDeepCopy.isEmpty())
         {
-<<<<<<< HEAD
             BestFNode node = frontierDeepCopy.remove();
             sb.append(node.getState().toString());
             sb.append(String.format("%.3f", node.getFCost()));
-=======
-            sb.append(frontierString.get(i));
-            sb.append(frontierScoreString.get(i));
->>>>>>> d9df61115e54179072ed6ea629dbfb5c0893872f
             sb.append(",");
         }
         sb.deleteCharAt(sb.length() - 1);
