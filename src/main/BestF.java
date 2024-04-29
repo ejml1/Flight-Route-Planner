@@ -96,7 +96,6 @@ public class BestF {
         for (int i = 0; i < frontierString.size(); i++)
         {
             sb.append(frontierString.get(i));
-            sb.append(",");
             sb.append(frontierScoreString.get(i));
             sb.append(",");
         }
