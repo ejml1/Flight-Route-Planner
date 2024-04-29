@@ -1,7 +1,6 @@
 package main;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -19,11 +18,7 @@ public class BestF {
         Set<Coordinate> inFrontier = new HashSet<Coordinate>();
         inFrontier.add(problem.getInitialState());
 
-        LinkedList<String> frontierString = new LinkedList<String>();
-        frontierString.add(initialNode.getState().toString());
-
-        LinkedList<String> frontierScoreString = new LinkedList<String>();
-        frontierScoreString.add(String.format("%.3f", initialNode.getFCost()));
+        PriorityQueue<BestFNode> frontierDeepCopy = new PriorityQueue<BestFNode>(frontier);
 
         Set<Coordinate> explored = new HashSet<Coordinate>();
         do
@@ -34,12 +29,9 @@ public class BestF {
                 System.out.println(nExplored);
                 return;
             }
-            System.out.println(frontierToString(frontierString, frontierScoreString));
+            System.out.println(frontierToString(frontierDeepCopy));
 
             BestFNode node = frontier.remove();
-            frontierString.removeFirst();
-
-            frontierScoreString.removeFirst();
 
             explored.add(node.getState());
             nExplored++;
@@ -58,11 +50,8 @@ public class BestF {
                 {
                     frontier.add(state);
                     inFrontier.add(state.getState());
-                    frontierString.add(state.getState().toString());
-
-                    frontierScoreString.add(String.format("%.3f", state.getFCost()));
                 }
-                
+                frontierDeepCopy = new PriorityQueue<BestFNode>(frontier);
             }
         } while (true);
     }
@@ -85,19 +74,18 @@ public class BestF {
     /**
      * Convert the frontierString to a string
      * @param frontierString A LinkedList that contains the states of the nodes in the frontier
-     * @param frontierScoreString A LinkedList that contains the f-cost of the nodes in the frontier
+     * @param frontierScoreString A ordered set that contains the f-cost of the nodes in the frontier
      * @return A string representation of the frontierString
      */
-    private static String frontierToString(LinkedList<String> frontierString, LinkedList<String> frontierScoreString)
+    private static String frontierToString(PriorityQueue<BestFNode> frontierDeepCopy)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        // Look at the frontierString in ascending order
-        for (int i = 0; i < frontierString.size(); i++)
+        while (!frontierDeepCopy.isEmpty())
         {
-            sb.append(frontierString.get(i));
-            sb.append(",");
-            sb.append(frontierScoreString.get(i));
+            BestFNode node = frontierDeepCopy.remove();
+            sb.append(node.getState().toString());
+            sb.append(String.format("%.3f", node.getFCost()));
             sb.append(",");
         }
         sb.deleteCharAt(sb.length() - 1);
