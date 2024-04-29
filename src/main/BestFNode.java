@@ -1,11 +1,19 @@
 package main;
 
+import java.util.Optional;
+
 public class BestFNode extends Node {
     
     private double hCost;
     private double fCost;
 
     public BestFNode(Coordinate state, Node parent, String action, int depth, double pathCost, double hCost, double fCost) {
+        super(state, parent, action, depth, pathCost);
+        this.hCost = hCost;
+        this.fCost = fCost;
+    }
+
+    public BestFNode(Coordinate state, Optional<Node> parent, String action, int depth, double pathCost, double hCost, double fCost) {
         super(state, parent, action, depth, pathCost);
         this.hCost = hCost;
         this.fCost = fCost;
