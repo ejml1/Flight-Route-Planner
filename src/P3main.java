@@ -1,6 +1,7 @@
 import java.util.Queue;
 import java.util.Stack;
 
+import main.AStar;
 import main.BFS;
 import main.BestF;
 import main.BestFNode;
@@ -144,6 +145,8 @@ public class P3main {
 			BestF.search(world, frontierBestF);
 			break;
 		case "AStar": //run AStar
+			PriorityQueue<BestFNode> frontierAStar = new PriorityQueue<BestFNode>();
+			AStar.search(world, frontierAStar);
 			break;
 		case "SMAStar": //run SMAStar
 			break;

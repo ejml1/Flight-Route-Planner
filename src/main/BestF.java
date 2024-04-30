@@ -13,15 +13,15 @@ public class BestF {
         GeneralSearchAlgorithmInformed.search(problem, frontier, "BestF");
     }
 
-    public static TreeSet<BestFNode> expand(BestFNode node, PriorityQueue<BestFNode> frontier, Set<Coordinate> explored, HashMap<Coordinate, Double> inFrontier, Coordinate goal)
+    public static TreeSet<BestFNode> expand(BestFNode node, PriorityQueue<BestFNode> frontier, Set<Coordinate> explored, HashMap<Coordinate, BestFNode> inFrontier, Coordinate goal)
     {
-        Set<BestFNode> nextStates = GeneralSearchAlgorithmInformed.successorFn(node, goal);
+        Set<BestFNode> nextStates = GeneralSearchAlgorithmInformed.successorFn(node, goal, GeneralSearchAlgorithmInformed.BESTF);
         TreeSet<BestFNode> successors = new TreeSet<BestFNode>();
         for (BestFNode state : nextStates)
         {
             if (!explored.contains(state.getState()) && !inFrontier.containsKey(state.getState()))
             {
-                BestFNode nd = GeneralSearchAlgorithmInformed.makeNode(Optional.of(node), state.getState(), goal);
+                BestFNode nd = GeneralSearchAlgorithmInformed.makeNode(Optional.of(node), state.getState(), goal, GeneralSearchAlgorithmInformed.BESTF);
                 successors.add(nd);
             }
         }

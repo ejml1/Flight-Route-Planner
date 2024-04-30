@@ -9,15 +9,18 @@ import java.util.HashSet;
 
 public class GeneralSearchAlgorithmInformed {
     
+    static final String BESTF = "BestF";
+    static final String ASTAR = "AStar";
+    
     public static void search(World problem, PriorityQueue<BestFNode> frontier, String algo)
     {
         int nExplored = 0;
 
-        BestFNode initialNode = GeneralSearchAlgorithmInformed.makeNode(Optional.empty(), problem.getInitialState(), problem.getGoal());
+        BestFNode initialNode = GeneralSearchAlgorithmInformed.makeNode(Optional.empty(), problem.getInitialState(), problem.getGoal(), algo);
         frontier.add(initialNode);
 
-        HashMap<Coordinate, Double> inFrontier = new HashMap<Coordinate, Double>();
-        inFrontier.put(problem.getInitialState(), initialNode.getFCost());
+        HashMap<Coordinate, BestFNode> inFrontier = new HashMap<Coordinate, BestFNode>();
+        inFrontier.put(problem.getInitialState(), initialNode);
 
         PriorityQueue<BestFNode> frontierDeepCopy = new PriorityQueue<BestFNode>(frontier);
 
@@ -46,13 +49,15 @@ public class GeneralSearchAlgorithmInformed {
             else
             {
                 TreeSet<BestFNode> successors = new TreeSet<BestFNode>();
-                if (algo == "BestF")
+                if (algo.equals(BESTF))
                     successors = BestF.expand(node, frontier, explored, inFrontier, problem.getGoal());
+                else
+                    successors = AStar.expand(node, frontier, explored, inFrontier, problem.getGoal());
                 // Add successors in ascending order
                 for (BestFNode state : successors)
                 {
                     frontier.add(state);
-                    inFrontier.put(state.getState(), state.getFCost());
+                    inFrontier.put(state.getState(), state);
                 }
                 frontierDeepCopy = new PriorityQueue<BestFNode>(frontier);
             }
@@ -65,7 +70,7 @@ public class GeneralSearchAlgorithmInformed {
      * @param state New state for the node
      * @return New node with the new state
      */
-    public static BestFNode makeNode(Optional<BestFNode> node, Coordinate state, Coordinate goal)
+    public static BestFNode makeNode(Optional<BestFNode> node, Coordinate state, Coordinate goal, String algo)
     {
         double stateAngleRadians = Math.toRadians(state.getAngle());
         double goalAngleRadians = Math.toRadians(goal.getAngle());
@@ -80,17 +85,21 @@ public class GeneralSearchAlgorithmInformed {
         String action = unwrappedNode.getAction() + state.toString();
         double pathCost = unwrappedNode.getPathCost() + GeneralSearchAlgorithm.cost(unwrappedNode.getState(), state);
         
-        BestFNode n = new BestFNode(state, unwrappedNode, action, unwrappedNode.getDepth() + 1, pathCost, hCost, hCost);
+        BestFNode n;
+        if (algo.equals(BESTF))
+            n = new BestFNode(state, unwrappedNode, action, unwrappedNode.getDepth() + 1, pathCost, hCost, hCost);
+        else
+            n = new BestFNode(state, unwrappedNode, action, unwrappedNode.getDepth() + 1, pathCost, hCost, hCost + pathCost);
         return n;
     }
 
-    public static TreeSet<BestFNode> successorFn(BestFNode node, Coordinate goal)
+    public static TreeSet<BestFNode> successorFn(BestFNode node, Coordinate goal, String algo)
     {
         TreeSet<BestFNode> successors = new TreeSet<>();
         Coordinate state = node.getState();
         for (Coordinate neighbour : state.getNeighbours())
         {
-            BestFNode newNode = makeNode(Optional.of(node), neighbour, goal);
+            BestFNode newNode = makeNode(Optional.of(node), neighbour, goal, algo);
             successors.add(newNode);
         }
         return successors;
