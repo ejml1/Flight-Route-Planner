@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import main.World;
-import main.BestFNode;
+import main.ISNode;
 import main.Coordinate;
 import main.Node;
 import main.BestF;
@@ -36,9 +36,9 @@ public class BestFTest {
     public void testBestFNodeOrder()
     {
         Node dummyNode = new Node(new Coordinate(0, 0), Optional.empty(), "", 0, 0);
-        BestFNode n1 = new BestFNode(new Coordinate(0, 0), dummyNode, "", 0, 0, 0, 2);
-        BestFNode n2 = new BestFNode(new Coordinate(0, 0), dummyNode, "", 0, 0, 0, 1);
-        PriorityQueue<BestFNode> frontier = new PriorityQueue<BestFNode>();
+        ISNode n1 = new ISNode(new Coordinate(0, 0), dummyNode, "", 0, 0, 0, 2);
+        ISNode n2 = new ISNode(new Coordinate(0, 0), dummyNode, "", 0, 0, 0, 1);
+        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
         frontier.add(n1);
         frontier.add(n2);
         assert(frontier.poll() == n2);
@@ -49,9 +49,9 @@ public class BestFTest {
     public void testBestFNodeTieBreak1()
     {
         Node dummyNode = new Node(new Coordinate(0, 0), Optional.empty(), "", 0, 0);
-        BestFNode n1 = new BestFNode(new Coordinate(0, 45), dummyNode, "", 0, 0, 0, 1);
-        BestFNode n2 = new BestFNode(new Coordinate(0, 0), dummyNode, "", 0, 0, 0, 1);
-        PriorityQueue<BestFNode> frontier = new PriorityQueue<BestFNode>();
+        ISNode n1 = new ISNode(new Coordinate(0, 45), dummyNode, "", 0, 0, 0, 1);
+        ISNode n2 = new ISNode(new Coordinate(0, 0), dummyNode, "", 0, 0, 0, 1);
+        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
         frontier.add(n1);
         frontier.add(n2);
         assert(frontier.poll() == n2);
@@ -62,9 +62,9 @@ public class BestFTest {
     public void testBestFNodeTieBreak2()
     {
         Node dummyNode = new Node(new Coordinate(0, 0), Optional.empty(), "", 0, 0);
-        BestFNode n1 = new BestFNode(new Coordinate(0, 45), dummyNode, "", 0, 0, 0, 1);
-        BestFNode n2 = new BestFNode(new Coordinate(0, 90), dummyNode, "", 0, 0, 0, 1);
-        PriorityQueue<BestFNode> frontier = new PriorityQueue<BestFNode>();
+        ISNode n1 = new ISNode(new Coordinate(0, 45), dummyNode, "", 0, 0, 0, 1);
+        ISNode n2 = new ISNode(new Coordinate(0, 90), dummyNode, "", 0, 0, 0, 1);
+        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
         frontier.add(n1);
         frontier.add(n2);
         assert(frontier.poll() == n1);
@@ -75,7 +75,7 @@ public class BestFTest {
     public void testNormalPath1()
     {
         World world = new World(3, "1:180", "1:315");
-        PriorityQueue<BestFNode> frontier = new PriorityQueue<BestFNode>();
+        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
         BestF.search(world, frontier);
 
         String [] actualLines = outContent.toString().trim().split("\\r?\\n");
@@ -87,7 +87,7 @@ public class BestFTest {
     public void testNormalPath2()
     {
         World world = new World(3, "1:0", "2:45");
-        PriorityQueue<BestFNode> frontier = new PriorityQueue<BestFNode>();
+        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
         BestF.search(world, frontier);
 
         String [] actualLines = outContent.toString().trim().split("\\r?\\n");
@@ -99,7 +99,7 @@ public class BestFTest {
     public void testOriginGoal1()
     {
         World world = new World(2, "1:0", "0:0");
-        PriorityQueue<BestFNode> frontier = new PriorityQueue<BestFNode>();
+        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
         BestF.search(world, frontier);
         
         String [] actualLines = outContent.toString().trim().split("\\r?\\n");
@@ -111,7 +111,7 @@ public class BestFTest {
     public void testOriginGoal2()
     {
         World world = new World(2, "1:0", "0:180");
-        PriorityQueue<BestFNode> frontier = new PriorityQueue<BestFNode>();
+        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
         BestF.search(world, frontier);
         
         String [] actualLines = outContent.toString().trim().split("\\r?\\n");

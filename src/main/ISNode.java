@@ -2,18 +2,18 @@ package main;
 
 import java.util.Optional;
 
-public class BestFNode extends Node {
+public class ISNode extends Node {
     
     private double hCost;
     private double fCost;
 
-    public BestFNode(Coordinate state, Node parent, String action, int depth, double pathCost, double hCost, double fCost) {
+    public ISNode(Coordinate state, Node parent, String action, int depth, double pathCost, double hCost, double fCost) {
         super(state, parent, action, depth, pathCost);
         this.hCost = hCost;
         this.fCost = fCost;
     }
 
-    public BestFNode(Coordinate state, Optional<Node> parent, String action, int depth, double pathCost, double hCost, double fCost) {
+    public ISNode(Coordinate state, Optional<Node> parent, String action, int depth, double pathCost, double hCost, double fCost) {
         super(state, parent, action, depth, pathCost);
         this.hCost = hCost;
         this.fCost = fCost;
@@ -37,8 +37,8 @@ public class BestFNode extends Node {
 
     @Override
     public int compareTo(Node other) {
-        if (other instanceof BestFNode) {
-            BestFNode otherBestFNode = (BestFNode) other;
+        if (other instanceof ISNode) {
+            ISNode otherBestFNode = (ISNode) other;
             double otherFCost = otherBestFNode.getFCost();
             if (this.fCost == otherFCost)
                 return super.compareTo(otherBestFNode);
