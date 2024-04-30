@@ -7,6 +7,7 @@ import java.util.HashMap;
 public class World {
 
     private int worldSize;
+    // Coordinates all stored in HashMap mainly for testing purposes
     private HashMap<String, Coordinate> coordinates;
     private Coordinate initialState;
     private Coordinate goal;
