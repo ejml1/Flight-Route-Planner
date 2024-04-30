@@ -1,10 +1,10 @@
 package main;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.HashMap;
 
 public class BestF {
     
@@ -13,13 +13,13 @@ public class BestF {
         GeneralSearchAlgorithmInformed.search(problem, frontier, "BestF");
     }
 
-    public static TreeSet<BestFNode> expand(BestFNode node, PriorityQueue<BestFNode> frontier, Set<Coordinate> explored, Set<Coordinate> inFrontier, Coordinate goal)
+    public static TreeSet<BestFNode> expand(BestFNode node, PriorityQueue<BestFNode> frontier, Set<Coordinate> explored, HashMap<Coordinate, Double> inFrontier, Coordinate goal)
     {
         Set<BestFNode> nextStates = GeneralSearchAlgorithmInformed.successorFn(node, goal);
         TreeSet<BestFNode> successors = new TreeSet<BestFNode>();
         for (BestFNode state : nextStates)
         {
-            if (!explored.contains(state.getState()) && !inFrontier.contains(state.getState()))
+            if (!explored.contains(state.getState()) && !inFrontier.containsKey(state.getState()))
             {
                 BestFNode nd = GeneralSearchAlgorithmInformed.makeNode(Optional.of(node), state.getState(), goal);
                 successors.add(nd);

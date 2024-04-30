@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.TreeSet;
 import java.util.Set;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class GeneralSearchAlgorithmInformed {
@@ -15,8 +16,8 @@ public class GeneralSearchAlgorithmInformed {
         BestFNode initialNode = GeneralSearchAlgorithmInformed.makeNode(Optional.empty(), problem.getInitialState(), problem.getGoal());
         frontier.add(initialNode);
 
-        Set<Coordinate> inFrontier = new HashSet<Coordinate>();
-        inFrontier.add(problem.getInitialState());
+        HashMap<Coordinate, Double> inFrontier = new HashMap<Coordinate, Double>();
+        inFrontier.put(problem.getInitialState(), initialNode.getFCost());
 
         PriorityQueue<BestFNode> frontierDeepCopy = new PriorityQueue<BestFNode>(frontier);
 
@@ -51,7 +52,7 @@ public class GeneralSearchAlgorithmInformed {
                 for (BestFNode state : successors)
                 {
                     frontier.add(state);
-                    inFrontier.add(state.getState());
+                    inFrontier.put(state.getState(), state.getFCost());
                 }
                 frontierDeepCopy = new PriorityQueue<BestFNode>(frontier);
             }
