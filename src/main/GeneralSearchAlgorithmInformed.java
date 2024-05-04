@@ -36,6 +36,7 @@ public class GeneralSearchAlgorithmInformed {
             System.out.println(frontierToString(frontierDeepCopy));
 
             ISNode node = frontier.remove();
+            inFrontier.remove(node.getState());
 
             explored.add(node.getState());
             nExplored++;
@@ -111,7 +112,7 @@ public class GeneralSearchAlgorithmInformed {
      * @param frontierScoreString A ordered set that contains the f-cost of the nodes in the frontier
      * @return A string representation of the frontierString
      */
-    private static String frontierToString(PriorityQueue<ISNode> frontierDeepCopy)
+    public static String frontierToString(PriorityQueue<ISNode> frontierDeepCopy)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("[");

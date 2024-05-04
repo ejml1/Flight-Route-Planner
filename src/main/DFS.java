@@ -33,6 +33,7 @@ public class DFS {
             System.out.println(frontierToString(frontierString));
 
             Node node = frontier.pop();
+            inFrontier.remove(node.getState());
             frontierString.removeLast();
 
             explored.add(node.getState());

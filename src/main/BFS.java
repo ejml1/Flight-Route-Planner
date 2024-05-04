@@ -33,6 +33,7 @@ public class BFS {
             System.out.println(frontierToString(frontierString));
 
             Node node = frontier.remove();
+            inFrontier.remove(node.getState());
             frontierString.removeFirst();
 
             explored.add(node.getState());
