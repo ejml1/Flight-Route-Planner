@@ -7,6 +7,8 @@ import main.BestF;
 import main.ISNode;
 import main.DFS;
 import main.Node;
+import main.SMAStar;
+import main.SMAStarNode;
 import main.World;
 
 import java.util.LinkedList;
@@ -149,6 +151,8 @@ public class P3main {
 			AStar.search(world, frontierAStar);
 			break;
 		case "SMAStar": //run SMAStar
+			PriorityQueue<SMAStarNode> frontierSMAStar = new PriorityQueue<SMAStarNode>();
+			SMAStar.search(world, frontierSMAStar, size);
 			break;
 		}
 

@@ -31,8 +31,10 @@ public class AStar {
                 {
                     frontier.remove(nd);
                     inFrontier.remove(state.getState());
+                    // TODO: Update Informed Search to match lectures
                     ISNode newNode = GeneralSearchAlgorithmInformed.makeNode(Optional.of(node), state.getState(), goal, GeneralSearchAlgorithmInformed.ASTAR);
                     successors.add(newNode);
+                    // END TODO
                 }
             }
         }

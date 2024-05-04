@@ -20,6 +20,10 @@ public class SMAStarNode extends ISNode {
         this.isLeaf = isLeaf;
     }
 
+    public void addForgotten(SMAStarNode node) {
+        this.forgotten.add(node);
+    }
+
     public TreeSet<SMAStarNode> getForgotten() {
         return this.forgotten;
     }
