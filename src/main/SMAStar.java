@@ -61,6 +61,7 @@ public class SMAStar {
                     }
                     frontier = shrinkFrontier(frontier, mem, inFrontier);
                 }
+                frontierDeepCopy = new PriorityQueue<>(frontier);
             }
         } while (true);
     }
@@ -84,7 +85,8 @@ public class SMAStar {
             }
             else
             {
-                if (!GeneralSearchAlgorithm.goalTest(ns.getState(), goal) && ns.getDepth() == mem)
+                // ns.getDepth + 1 to account for current depth of ns
+                if (!GeneralSearchAlgorithm.goalTest(ns.getState(), goal) && ns.getDepth() + 1 == mem)
                 {
                     ns.setFCost(INF);
                 }
