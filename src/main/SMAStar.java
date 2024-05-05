@@ -272,8 +272,8 @@ public class SMAStar {
             // {
             //     sb.append("Parent Node: N/A");
             // }
-            sb.append(" Depth:");
-            sb.append(node.getDepth());
+            // sb.append(" Depth:");
+            // sb.append(node.getDepth());
             sb.append(",");
             nodeCount++;
         }
