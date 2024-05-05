@@ -257,8 +257,8 @@ public class SMAStar {
         while (!frontierDeepCopy.isEmpty())
         {
             SMAStarNode node = frontierDeepCopy.remove();
-            sb.append(nodeCount);
-            sb.append(":");
+            // sb.append(nodeCount);
+            // sb.append(":");
             sb.append(node.getState().toString());
             sb.append(String.format("%.3f", node.getFCost()));
             // sb.append(node.getIsLeaf());
