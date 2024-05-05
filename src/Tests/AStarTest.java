@@ -1,6 +1,6 @@
 package Tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -10,12 +10,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.World;
+import main.AStar;
 import main.ISNode;
-import main.BestF;
+import main.World;
 
-public class BestFTest {
-    
+public class AStarTest {
+
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
 
@@ -27,14 +27,14 @@ public class BestFTest {
     @After
     public void restoreStreams() {
         System.setOut(originalOut);
-    }
+    }    
 
     @Test
     public void testNormalPath1()
     {
         World world = new World(3, "1:180", "1:315");
         PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
-        BestF.search(world, frontier);
+        AStar.search(world, frontier);
 
         String [] actualLines = outContent.toString().trim().split("\\r?\\n");
 
@@ -46,7 +46,7 @@ public class BestFTest {
     {
         World world = new World(3, "1:0", "2:45");
         PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
-        BestF.search(world, frontier);
+        AStar.search(world, frontier);
 
         String [] actualLines = outContent.toString().trim().split("\\r?\\n");
 
@@ -58,7 +58,7 @@ public class BestFTest {
     {
         World world = new World(2, "1:0", "0:0");
         PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
-        BestF.search(world, frontier);
+        AStar.search(world, frontier);
         
         String [] actualLines = outContent.toString().trim().split("\\r?\\n");
 
@@ -70,10 +70,11 @@ public class BestFTest {
     {
         World world = new World(2, "1:0", "0:180");
         PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
-        BestF.search(world, frontier);
+        AStar.search(world, frontier);
         
         String [] actualLines = outContent.toString().trim().split("\\r?\\n");
 
         assertEquals("fail", actualLines[actualLines.length - 2]);
     }
+
 }
