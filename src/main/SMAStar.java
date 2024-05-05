@@ -77,7 +77,7 @@ public class SMAStar {
         TreeSet<SMAStarNode> succList;
         if (nd.getForgotten().isEmpty())
         {
-            succList = expand(nd, problem, frontier, inFrontier, goal);
+            succList = expand(nd, problem, frontier, inFrontier, goal, mem);
         }
         else
         {
@@ -108,27 +108,28 @@ public class SMAStar {
         return succList;
     }
 
-    private static TreeSet<SMAStarNode> expand(SMAStarNode node, World problem, PriorityQueue<SMAStarNode> frontier, HashMap<Coordinate, SMAStarNode> inFrontier, Coordinate goal)
+    private static TreeSet<SMAStarNode> expand(SMAStarNode node, World problem, PriorityQueue<SMAStarNode> frontier, HashMap<Coordinate, SMAStarNode> inFrontier, Coordinate goal, int mem)
     {
         Set<SMAStarNode> nextStates = successorFn(node, problem);
         TreeSet<SMAStarNode> successors = new TreeSet<SMAStarNode>();
         for (SMAStarNode state : nextStates)
         {
+            SMAStarNode nd = makeNode(Optional.of(node), state.getState(), goal);
             if (!inFrontier.containsKey(state.getState()))
             {
-                SMAStarNode nd = makeNode(Optional.of(node), state.getState(), goal);
                 successors.add(nd);
             }
-            if (inFrontier.containsKey(state.getState()))
+            // Extra condition nd.getDepth() < mem to ensure that a node at depth = mem with value < INF is NOT added into the frontier 
+            else if (inFrontier.containsKey(state.getState()) && nd.getDepth() < mem)
             {
-                SMAStarNode nd = inFrontier.get(state.getState());
-                if (nd.getPathCost() > state.getPathCost())
+                SMAStarNode ndOld = inFrontier.get(state.getState());
+                if (ndOld.getPathCost() > state.getPathCost())
                 {
-                    frontier.remove(nd);
+                    frontier.remove(ndOld);
                     inFrontier.remove(state.getState());
-                    SMAStarNode newNode = makeNode(Optional.of(node), state.getState(), goal);
-                    frontier.add(newNode);
-                    inFrontier.put(state.getState(), newNode);
+
+                    frontier.add(nd);
+                    inFrontier.put(state.getState(), nd);
                 }
             }
         }
