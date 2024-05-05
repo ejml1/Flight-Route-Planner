@@ -32,10 +32,6 @@ public class SMAStarNode extends ISNode {
         this.forgotten = forgotten;
     }
 
-    public boolean isIsLeaf() {
-        return this.isLeaf;
-    }
-
     public boolean getIsLeaf() {
         return this.isLeaf;
     }

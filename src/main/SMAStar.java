@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class SMAStar {
     
-    static final double INF = 10000.0;
+    public static final double INF = 10000.0;
 
     public static void search(World problem, PriorityQueue<SMAStarNode> frontier, int mem)
     {
@@ -20,7 +20,8 @@ public class SMAStar {
         HashMap<Coordinate, SMAStarNode> inFrontier = new HashMap<Coordinate, SMAStarNode>();
         inFrontier.put(problem.getInitialState(), initialNode);
 
-        PriorityQueue<ISNode> frontierDeepCopy = new PriorityQueue<>(frontier);
+        //PriorityQueue<ISNode> frontierDeepCopy = new PriorityQueue<>(frontier);
+        PriorityQueue<SMAStarNode> frontierDeepCopy = new PriorityQueue<>(frontier);
         do
         {
             if (frontier.isEmpty())
@@ -29,8 +30,8 @@ public class SMAStar {
                 System.out.println(nExplored);
                 return;
             }
-            System.out.println(GeneralSearchAlgorithmInformed.frontierToString(frontierDeepCopy));
-
+            //System.out.println(GeneralSearchAlgorithmInformed.frontierToString(frontierDeepCopy));
+            System.out.println(frontierToString(frontierDeepCopy));
             SMAStarNode node = frontier.remove();
             inFrontier.remove(node.getState());
 
@@ -59,9 +60,14 @@ public class SMAStar {
                         frontier.add(ns);
                         inFrontier.put(ns.getState(), ns);
                     }
+                    // System.out.println("frontier After process expand:");
+                    // frontierDeepCopy = new PriorityQueue<>(frontier);
+                    // System.out.println(frontierToString(frontierDeepCopy));
+
                     frontier = shrinkFrontier(frontier, mem, inFrontier);
+                    frontierDeepCopy = new PriorityQueue<>(frontier);
                 }
-                frontierDeepCopy = new PriorityQueue<>(frontier);
+                
             }
         } while (true);
     }
@@ -75,8 +81,10 @@ public class SMAStar {
         }
         else
         {
-            succList = nd.getForgotten();
+            // System.out.println("Forgotten not empty");
+            succList = new TreeSet<SMAStarNode>(nd.getForgotten());
         }
+        // Separate list to avoid concurrent modification exception
         TreeSet<SMAStarNode> toAdd = new TreeSet<>();
         for (SMAStarNode ns : succList)
         {
@@ -91,11 +99,11 @@ public class SMAStar {
                 {
                     ns.setFCost(INF);
                 }
-                ns.setIsLeaf(true);
-                SMAStarNode nsParent = (SMAStarNode) ns.getParent().get();
-                nsParent.setIsLeaf(false);
-                toAdd.add(ns);
             }
+            ns.setIsLeaf(true);
+            SMAStarNode nsParent = (SMAStarNode) ns.getParent().get();
+            nsParent.setIsLeaf(false);
+            toAdd.add(ns);
         }
         succList.addAll(toAdd);
         return succList;
@@ -178,14 +186,20 @@ public class SMAStar {
                 ndParent.setFCost(leastF);
 
                 PriorityQueue<SMAStarNode> frontierDeepCopy = new PriorityQueue<>(frontier);
+                boolean needsReinsertion = true;
                 for (SMAStarNode nx : frontierDeepCopy)
                 {
-                    if (ancestors(nx).contains(nd))
+                    if (ancestors(nx).contains(ndParent))
                     {
-                        ndParent.setIsLeaf(true);
-                        frontier.add(ndParent);
-                        inFrontier.put(ndParent.getState(), ndParent);
+                        needsReinsertion = false;
+                        break;
                     }
+                }
+                if (needsReinsertion)
+                {
+                    ndParent.setIsLeaf(true);
+                    frontier.add(ndParent);
+                    inFrontier.put(ndParent.getState(), ndParent);
                 }
             }
         }
@@ -194,12 +208,17 @@ public class SMAStar {
 
     private static SMAStarNode getWorstLeafNode(PriorityQueue<SMAStarNode> frontier)
     {
+        //System.out.println("Getting worst leaf node");
+        // for (SMAStarNode ns : frontier)
+        // {
+        //     System.out.println(ns.getIsLeaf());
+        // }
         PriorityQueue<SMAStarNode> frontierDeepCopy = new PriorityQueue<>(frontier);
         Optional<SMAStarNode> worstLeafNode = Optional.empty();
         do 
         {
             SMAStarNode node = frontierDeepCopy.remove();
-            if (node.isIsLeaf())
+            if (node.getIsLeaf())
             {
                 if (worstLeafNode.isEmpty())
                 {
@@ -218,7 +237,7 @@ public class SMAStar {
         return worstLeafNode.get();
     }
 
-    private static TreeSet<SMAStarNode> ancestors(SMAStarNode nx)
+    public static TreeSet<SMAStarNode> ancestors(SMAStarNode nx)
     {
         TreeSet<SMAStarNode> ancestors = new TreeSet<>();
         Optional<Node> parent = nx.getParent();
@@ -229,5 +248,38 @@ public class SMAStar {
             parent = nd.getParent();
         }
         return ancestors;
+    }
+
+    public static String frontierToString(PriorityQueue<SMAStarNode> frontierDeepCopy)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        int nodeCount = 1;
+        while (!frontierDeepCopy.isEmpty())
+        {
+            SMAStarNode node = frontierDeepCopy.remove();
+            sb.append(nodeCount);
+            sb.append(":");
+            sb.append(node.getState().toString());
+            sb.append(String.format("%.3f", node.getFCost()));
+            // sb.append(node.getIsLeaf());
+            // sb.append(" ");
+            // if (node.getParent().isPresent())
+            // {
+            //     sb.append("Parent Node:");
+            //     sb.append(node.getParent().get().getState().toString());
+            // }
+            // else
+            // {
+            //     sb.append("Parent Node: N/A");
+            // }
+            sb.append(" Depth:");
+            sb.append(node.getDepth());
+            sb.append(",");
+            nodeCount++;
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]");
+        return sb.toString();
     }
 }
