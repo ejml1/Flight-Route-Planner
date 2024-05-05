@@ -79,7 +79,7 @@ public class GeneralSearchAlgorithmInformed {
             - 2 * state.getParallel() * goal.getParallel() * Math.cos(goalAngleRadians - stateAngleRadians));
         if (node.isEmpty())
         {
-            return new ISNode(state, Optional.empty(), state.toString(), 0, 0, hCost, hCost);
+            return new ISNode(state, Optional.empty(), state.toString(), 1, 0, hCost, hCost);
         }
         Node unwrappedNode = node.get();
 

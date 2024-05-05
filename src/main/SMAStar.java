@@ -94,8 +94,7 @@ public class SMAStar {
             }
             else
             {
-                // ns.getDepth + 1 to account for current depth of ns
-                if (!GeneralSearchAlgorithm.goalTest(ns.getState(), goal) && ns.getDepth() + 1 == mem)
+                if (!GeneralSearchAlgorithm.goalTest(ns.getState(), goal) && ns.getDepth() == mem)
                 {
                     ns.setFCost(INF);
                 }
@@ -144,7 +143,7 @@ public class SMAStar {
             - 2 * state.getParallel() * goal.getParallel() * Math.cos(goalAngleRadians - stateAngleRadians));
         if (node.isEmpty())
         {
-            return new SMAStarNode(state, Optional.empty(), state.toString(), 0, 0, hCost, hCost, 
+            return new SMAStarNode(state, Optional.empty(), state.toString(), 1, 0, hCost, hCost, 
                 new TreeSet<SMAStarNode>(), false);
         }
         Node unwrappedNode = node.get();

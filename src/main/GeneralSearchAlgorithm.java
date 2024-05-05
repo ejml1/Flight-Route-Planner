@@ -14,7 +14,7 @@ public class GeneralSearchAlgorithm {
     {
         if (node.isEmpty())
         {
-            return new Node(state, Optional.empty(), state.toString(), 0, 0);
+            return new Node(state, Optional.empty(), state.toString(), 1, 0);
         }
         Node unwrappedNode = node.get();
 
