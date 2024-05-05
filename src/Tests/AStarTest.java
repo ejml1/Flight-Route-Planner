@@ -4,13 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import main.AStar;
+import main.Coordinate;
 import main.ISNode;
 import main.World;
 
@@ -77,4 +81,31 @@ public class AStarTest {
         assertEquals("fail", actualLines[actualLines.length - 2]);
     }
 
+    @Test
+    public void testReplacement()
+    {
+        Coordinate c1 = new Coordinate(1, 0);
+        Coordinate c2 = new Coordinate(2, 0);
+
+        Coordinate goal = new Coordinate(0, 0);
+
+        TreeSet<Coordinate> neighbours = new TreeSet<Coordinate>();
+        neighbours.add(c2);
+        c1.setNeighbours(neighbours);
+
+        ISNode node1 = new ISNode(c1, Optional.empty(), "", 1, 0, 1, 1);
+        ISNode node2 = new ISNode(c2, Optional.empty(), "", 1, 100, 2, 102);
+
+        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
+        frontier.add(node2);
+
+        HashMap<Coordinate, ISNode> inFrontier = new HashMap<Coordinate, ISNode>();
+        inFrontier.put(c2, node2);
+
+        AStar.expand(node1, frontier, new TreeSet<>(), inFrontier, goal);
+
+        ISNode improvedNode = frontier.remove();
+        assertEquals(c2, improvedNode.getState());
+        assertEquals(3, improvedNode.getFCost());
+    }
 }
