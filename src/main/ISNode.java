@@ -38,10 +38,10 @@ public class ISNode extends Node {
     @Override
     public int compareTo(Node other) {
         if (other instanceof ISNode) {
-            ISNode otherBestFNode = (ISNode) other;
-            double otherFCost = otherBestFNode.getFCost();
+            ISNode otherISNode = (ISNode) other;
+            double otherFCost = otherISNode.getFCost();
             if (this.fCost == otherFCost)
-                return super.compareTo(otherBestFNode);
+                return super.compareTo(otherISNode);
             else
                 return Double.compare(this.fCost, otherFCost);
         }

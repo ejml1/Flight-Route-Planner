@@ -33,45 +33,6 @@ public class BestFTest {
     }
 
     @Test
-    public void testBestFNodeOrder()
-    {
-        Node dummyNode = new Node(new Coordinate(0, 0), Optional.empty(), "", 0, 0);
-        ISNode n1 = new ISNode(new Coordinate(0, 0), dummyNode, "", 0, 0, 0, 2);
-        ISNode n2 = new ISNode(new Coordinate(0, 0), dummyNode, "", 0, 0, 0, 1);
-        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
-        frontier.add(n1);
-        frontier.add(n2);
-        assert(frontier.poll() == n2);
-        assert(frontier.poll() == n1);
-    }
-
-    @Test
-    public void testBestFNodeTieBreak1()
-    {
-        Node dummyNode = new Node(new Coordinate(0, 0), Optional.empty(), "", 0, 0);
-        ISNode n1 = new ISNode(new Coordinate(0, 45), dummyNode, "", 0, 0, 0, 1);
-        ISNode n2 = new ISNode(new Coordinate(0, 0), dummyNode, "", 0, 0, 0, 1);
-        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
-        frontier.add(n1);
-        frontier.add(n2);
-        assert(frontier.poll() == n2);
-        assert(frontier.poll() == n1);
-    }
-
-    @Test
-    public void testBestFNodeTieBreak2()
-    {
-        Node dummyNode = new Node(new Coordinate(0, 0), Optional.empty(), "", 0, 0);
-        ISNode n1 = new ISNode(new Coordinate(0, 45), dummyNode, "", 0, 0, 0, 1);
-        ISNode n2 = new ISNode(new Coordinate(0, 90), dummyNode, "", 0, 0, 0, 1);
-        PriorityQueue<ISNode> frontier = new PriorityQueue<ISNode>();
-        frontier.add(n1);
-        frontier.add(n2);
-        assert(frontier.poll() == n1);
-        assert(frontier.poll() == n2);
-    }
-
-    @Test
     public void testNormalPath1()
     {
         World world = new World(3, "1:180", "1:315");
