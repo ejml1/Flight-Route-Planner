@@ -77,6 +77,7 @@ public class SMAStar {
         {
             succList = nd.getForgotten();
         }
+        TreeSet<SMAStarNode> toAdd = new TreeSet<>();
         for (SMAStarNode ns : succList)
         {
             if (nd.getForgotten().contains(ns))
@@ -93,15 +94,16 @@ public class SMAStar {
                 ns.setIsLeaf(true);
                 SMAStarNode nsParent = (SMAStarNode) ns.getParent().get();
                 nsParent.setIsLeaf(false);
-                succList.add(ns);
+                toAdd.add(ns);
             }
         }
+        succList.addAll(toAdd);
         return succList;
     }
 
     private static TreeSet<SMAStarNode> expand(SMAStarNode node, World problem, PriorityQueue<SMAStarNode> frontier, HashMap<Coordinate, SMAStarNode> inFrontier, Coordinate goal)
     {
-        Set<SMAStarNode> nextStates = successorFn(node.getState(), problem);
+        Set<SMAStarNode> nextStates = successorFn(node, problem);
         TreeSet<SMAStarNode> successors = new TreeSet<SMAStarNode>();
         for (SMAStarNode state : nextStates)
         {
@@ -147,12 +149,13 @@ public class SMAStar {
         return n;
     }
 
-    private static TreeSet<SMAStarNode> successorFn(Coordinate state, World problem)
+    private static TreeSet<SMAStarNode> successorFn(SMAStarNode node, World problem)
     {
         TreeSet<SMAStarNode> successors = new TreeSet<>();
+        Coordinate state = node.getState();
         for (Coordinate neighbour : state.getNeighbours())
         {
-            SMAStarNode newNode = makeNode(Optional.empty(), neighbour, problem.getGoal());
+            SMAStarNode newNode = makeNode(Optional.of(node), neighbour, problem.getGoal());
             successors.add(newNode);
         }
         return successors;
