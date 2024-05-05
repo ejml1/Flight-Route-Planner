@@ -169,7 +169,7 @@ public class SMAStar {
         return successors;
     }
 
-    private static PriorityQueue<SMAStarNode> shrinkFrontier(PriorityQueue<SMAStarNode> frontier, int mem, HashMap<Coordinate, SMAStarNode> inFrontier)
+    public static PriorityQueue<SMAStarNode> shrinkFrontier(PriorityQueue<SMAStarNode> frontier, int mem, HashMap<Coordinate, SMAStarNode> inFrontier)
     {
         while (frontier.size() > mem)
         {
@@ -206,7 +206,7 @@ public class SMAStar {
         return frontier;
     }
 
-    private static SMAStarNode getWorstLeafNode(PriorityQueue<SMAStarNode> frontier)
+    public static SMAStarNode getWorstLeafNode(PriorityQueue<SMAStarNode> frontier)
     {
         //System.out.println("Getting worst leaf node");
         // for (SMAStarNode ns : frontier)
