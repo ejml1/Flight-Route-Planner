@@ -20,8 +20,7 @@ public class SMAStar {
         HashMap<Coordinate, SMAStarNode> inFrontier = new HashMap<Coordinate, SMAStarNode>();
         inFrontier.put(problem.getInitialState(), initialNode);
 
-        //PriorityQueue<ISNode> frontierDeepCopy = new PriorityQueue<>(frontier);
-        PriorityQueue<SMAStarNode> frontierDeepCopy = new PriorityQueue<>(frontier);
+        PriorityQueue<ISNode> frontierDeepCopy = new PriorityQueue<>(frontier);
         do
         {
             if (frontier.isEmpty())
@@ -30,8 +29,7 @@ public class SMAStar {
                 System.out.println(nExplored);
                 return;
             }
-            //System.out.println(GeneralSearchAlgorithmInformed.frontierToString(frontierDeepCopy));
-            System.out.println(frontierToString(frontierDeepCopy));
+            System.out.println(GeneralSearchAlgorithmInformed.frontierToString(frontierDeepCopy));
             SMAStarNode node = frontier.remove();
             inFrontier.remove(node.getState());
 
@@ -60,9 +58,6 @@ public class SMAStar {
                         frontier.add(ns);
                         inFrontier.put(ns.getState(), ns);
                     }
-                    // System.out.println("frontier After process expand:");
-                    // frontierDeepCopy = new PriorityQueue<>(frontier);
-                    // System.out.println(frontierToString(frontierDeepCopy));
 
                     frontier = shrinkFrontier(frontier, mem, inFrontier);
                     frontierDeepCopy = new PriorityQueue<>(frontier);
@@ -204,11 +199,6 @@ public class SMAStar {
 
     public static SMAStarNode getWorstLeafNode(PriorityQueue<SMAStarNode> frontier)
     {
-        //System.out.println("Getting worst leaf node");
-        // for (SMAStarNode ns : frontier)
-        // {
-        //     System.out.println(ns.getIsLeaf());
-        // }
         PriorityQueue<SMAStarNode> frontierDeepCopy = new PriorityQueue<>(frontier);
         Optional<SMAStarNode> worstLeafNode = Optional.empty();
         do 
@@ -244,38 +234,5 @@ public class SMAStar {
             parent = nd.getParent();
         }
         return ancestors;
-    }
-
-    public static String frontierToString(PriorityQueue<SMAStarNode> frontierDeepCopy)
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        int nodeCount = 1;
-        while (!frontierDeepCopy.isEmpty())
-        {
-            SMAStarNode node = frontierDeepCopy.remove();
-            // sb.append(nodeCount);
-            // sb.append(":");
-            sb.append(node.getState().toString());
-            sb.append(String.format("%.3f", node.getFCost()));
-            // sb.append(node.getIsLeaf());
-            // sb.append(" ");
-            // if (node.getParent().isPresent())
-            // {
-            //     sb.append("Parent Node:");
-            //     sb.append(node.getParent().get().getState().toString());
-            // }
-            // else
-            // {
-            //     sb.append("Parent Node: N/A");
-            // }
-            // sb.append(" Depth:");
-            // sb.append(node.getDepth());
-            sb.append(",");
-            nodeCount++;
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append("]");
-        return sb.toString();
     }
 }
