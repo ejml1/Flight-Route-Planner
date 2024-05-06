@@ -81,11 +81,9 @@ public class SMAStar {
         }
         else
         {
-            // System.out.println("Forgotten not empty");
             succList = new TreeSet<SMAStarNode>(nd.getForgotten());
         }
-        // Separate list to avoid concurrent modification exception
-        TreeSet<SMAStarNode> toAdd = new TreeSet<>();
+
         for (SMAStarNode ns : succList)
         {
             if (nd.getForgotten().contains(ns))
@@ -102,9 +100,7 @@ public class SMAStar {
             ns.setIsLeaf(true);
             SMAStarNode nsParent = (SMAStarNode) ns.getParent().get();
             nsParent.setIsLeaf(false);
-            toAdd.add(ns);
         }
-        succList.addAll(toAdd);
         return succList;
     }
 
@@ -127,12 +123,13 @@ public class SMAStar {
                 {
                     frontier.remove(ndOld);
                     inFrontier.remove(state.getState());
-
+                    // Set nd as leaf node before adding to frontier
+                    nd.setIsLeaf(true);
                     frontier.add(nd);
                     inFrontier.put(state.getState(), nd);
                 }
             }
-        }
+        }        
         return successors;
     }
 
@@ -184,9 +181,8 @@ public class SMAStar {
                 ndParent.addForgotten(nd);
                 double leastF = ndParent.getForgotten().first().getFCost();
                 ndParent.setFCost(leastF);
-
-                PriorityQueue<SMAStarNode> frontierDeepCopy = new PriorityQueue<>(frontier);
                 boolean needsReinsertion = true;
+                PriorityQueue<SMAStarNode> frontierDeepCopy = new PriorityQueue<>(frontier);
                 for (SMAStarNode nx : frontierDeepCopy)
                 {
                     if (ancestors(nx).contains(ndParent))
