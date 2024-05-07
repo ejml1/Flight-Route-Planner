@@ -94,18 +94,6 @@ public class GeneralSearchAlgorithmInformed {
         return n;
     }
 
-    public static TreeSet<ISNode> successorFn(ISNode node, Coordinate goal, String algo)
-    {
-        TreeSet<ISNode> successors = new TreeSet<>();
-        Coordinate state = node.getState();
-        for (Coordinate neighbour : state.getNeighbours())
-        {
-            ISNode newNode = makeNode(Optional.of(node), neighbour, goal, algo);
-            successors.add(newNode);
-        }
-        return successors;
-    }
-
     /**
      * Convert the frontierString to a string
      * @param frontierString A LinkedList that contains the states of the nodes in the frontier

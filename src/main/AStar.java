@@ -15,25 +15,24 @@ public class AStar {
 
     public static TreeSet<ISNode> expand(ISNode node, PriorityQueue<ISNode> frontier, Set<Coordinate> explored, HashMap<Coordinate, ISNode> inFrontier, Coordinate goal)
     {
-        Set<ISNode> nextStates = GeneralSearchAlgorithmInformed.successorFn(node, goal, GeneralSearchAlgorithmInformed.ASTAR);
+        Set<Coordinate> nextStates = node.getState().getNeighbours();
         TreeSet<ISNode> successors = new TreeSet<ISNode>();
-        for (ISNode state : nextStates)
+        for (Coordinate state : nextStates)
         {
-            if (!explored.contains(state.getState()) && !inFrontier.containsKey(state.getState()))
-            {
-                ISNode nd = GeneralSearchAlgorithmInformed.makeNode(Optional.of(node), state.getState(), goal, GeneralSearchAlgorithmInformed.ASTAR);
+            ISNode nd = GeneralSearchAlgorithmInformed.makeNode(Optional.of(node), state, goal, GeneralSearchAlgorithmInformed.ASTAR);
+            if (!explored.contains(state) && !inFrontier.containsKey(state))
+            {   
                 successors.add(nd);
             }
-            if (inFrontier.containsKey(state.getState()))
+            if (inFrontier.containsKey(state))
             {
-                ISNode nd = inFrontier.get(state.getState());
-                if (nd.getPathCost() > state.getPathCost())
+                ISNode ndInFrontier = inFrontier.get(state);
+                if (ndInFrontier.getPathCost() > nd.getPathCost())
                 {
-                    frontier.remove(nd);
-                    inFrontier.remove(state.getState());
-                    ISNode newNode = GeneralSearchAlgorithmInformed.makeNode(Optional.of(node), state.getState(), goal, GeneralSearchAlgorithmInformed.ASTAR);
-                    frontier.add(newNode);
-                    inFrontier.put(state.getState(), newNode);
+                    frontier.remove(ndInFrontier);
+                    inFrontier.remove(state);
+                    frontier.add(nd);
+                    inFrontier.put(state, nd);
                 }
             }
         }
