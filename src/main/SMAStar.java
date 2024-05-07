@@ -101,27 +101,27 @@ public class SMAStar {
 
     private static TreeSet<SMAStarNode> expand(SMAStarNode node, World problem, PriorityQueue<SMAStarNode> frontier, HashMap<Coordinate, SMAStarNode> inFrontier, Coordinate goal, int mem)
     {
-        Set<SMAStarNode> nextStates = successorFn(node, problem);
+        Set<Coordinate> nextStates = node.getState().getNeighbours();
         TreeSet<SMAStarNode> successors = new TreeSet<SMAStarNode>();
-        for (SMAStarNode state : nextStates)
+        for (Coordinate state : nextStates)
         {
-            SMAStarNode nd = makeNode(Optional.of(node), state.getState(), goal);
-            if (!inFrontier.containsKey(state.getState()))
+            SMAStarNode nd = makeNode(Optional.of(node), state, goal);
+            if (!inFrontier.containsKey(state))
             {
                 successors.add(nd);
             }
             // Extra condition nd.getDepth() < mem to ensure that a node at depth = mem with value < INF is NOT added into the frontier 
-            else if (inFrontier.containsKey(state.getState()) && nd.getDepth() < mem)
+            else if (inFrontier.containsKey(state) && nd.getDepth() < mem)
             {
-                SMAStarNode ndOld = inFrontier.get(state.getState());
-                if (ndOld.getPathCost() > state.getPathCost())
+                SMAStarNode ndInFrontier = inFrontier.get(state);
+                if (ndInFrontier.getPathCost() > nd.getPathCost())
                 {
-                    frontier.remove(ndOld);
-                    inFrontier.remove(state.getState());
+                    frontier.remove(ndInFrontier);
+                    inFrontier.remove(state);
                     // Set nd as leaf node before adding to frontier
                     nd.setIsLeaf(true);
                     frontier.add(nd);
-                    inFrontier.put(state.getState(), nd);
+                    inFrontier.put(state, nd);
                 }
             }
         }        
@@ -147,18 +147,6 @@ public class SMAStar {
         SMAStarNode n = new SMAStarNode(state, unwrappedNode, action, unwrappedNode.getDepth() + 1, pathCost, hCost, hCost + pathCost, 
             new TreeSet<SMAStarNode>(), false);
         return n;
-    }
-
-    private static TreeSet<SMAStarNode> successorFn(SMAStarNode node, World problem)
-    {
-        TreeSet<SMAStarNode> successors = new TreeSet<>();
-        Coordinate state = node.getState();
-        for (Coordinate neighbour : state.getNeighbours())
-        {
-            SMAStarNode newNode = makeNode(Optional.of(node), neighbour, problem.getGoal());
-            successors.add(newNode);
-        }
-        return successors;
     }
 
     public static PriorityQueue<SMAStarNode> shrinkFrontier(PriorityQueue<SMAStarNode> frontier, int mem, HashMap<Coordinate, SMAStarNode> inFrontier)
