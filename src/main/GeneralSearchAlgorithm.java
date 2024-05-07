@@ -25,6 +25,13 @@ public class GeneralSearchAlgorithm {
         return n;
     }
     
+    /**
+     * Algorithm to calculate the cost of moving from one state to another. 
+     * @IMPORTANT: This algorithm assumes that that the provided coordinates are adjacent.
+     * @param s1 Coordinate 1
+     * @param s2 Coordinate 2
+     * @return Cost of moving from s1 to s2
+     */
     public static double cost(Coordinate s1, Coordinate s2)
     {
         int parallel1 = s1.getParallel();
@@ -47,18 +54,6 @@ public class GeneralSearchAlgorithm {
     public static boolean goalTest(Coordinate state, Coordinate goal)
     {
         return state.equals(goal);
-    }
-
-    public static TreeSet<Node> successorFn(Node node)
-    {
-        TreeSet<Node> successors = new TreeSet<>();
-        Coordinate state = node.getState();
-        for (Coordinate neighbour : state.getNeighbours())
-        {
-            Node newNode = makeNode(Optional.of(node), neighbour);
-            successors.add(newNode);
-        }
-        return successors;
     }
 
 }

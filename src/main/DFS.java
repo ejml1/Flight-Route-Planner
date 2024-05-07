@@ -13,6 +13,7 @@ public class DFS {
         int nExplored = 0;
 
         Node initialNode = GeneralSearchAlgorithm.makeNode(Optional.empty(), problem.getInitialState());
+        // INSERT-FRONT
         frontier.push(initialNode);
 
         Set<Coordinate> inFrontier = new HashSet<Coordinate>();
@@ -32,6 +33,7 @@ public class DFS {
             }
             System.out.println(frontierToString(frontierString));
 
+            // REMOVE-FRONT
             Node node = frontier.pop();
             inFrontier.remove(node.getState());
             frontierString.removeLast();
@@ -48,7 +50,7 @@ public class DFS {
             else
             {
                 TreeSet<Node> successors = expand(node, frontier, explored, inFrontier);
-                // Add successors in descending order
+                // Add successors in descending order (INSERT-ALL-FRONT)
                 for (int i = successors.size() - 1; i >= 0; i--)
                 {
                     Node state = successors.pollLast();
@@ -63,13 +65,14 @@ public class DFS {
 
     private static TreeSet<Node> expand(Node node, Stack<Node> frontier, Set<Coordinate> explored, Set<Coordinate> inFrontier)
     {
-        Set<Node> nextStates = GeneralSearchAlgorithm.successorFn(node);
+        // SUCCESSOR-FN
+        Set<Coordinate> nextStates = node.getState().getNeighbours();
         TreeSet<Node> successors = new TreeSet<Node>();
-        for (Node state : nextStates)
+        for (Coordinate state : nextStates)
         {
-            if (!explored.contains(state.getState()) && !inFrontier.contains(state.getState()))
+            if (!explored.contains(state) && !inFrontier.contains(state))
             {
-                Node nd = GeneralSearchAlgorithm.makeNode(Optional.of(node), state.getState());
+                Node nd = GeneralSearchAlgorithm.makeNode(Optional.of(node), state);
                 successors.add(nd);
             }
         }
