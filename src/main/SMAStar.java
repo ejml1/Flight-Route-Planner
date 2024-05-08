@@ -20,7 +20,6 @@ public class SMAStar {
         HashMap<Coordinate, SMAStarNode> inFrontier = new HashMap<Coordinate, SMAStarNode>();
         inFrontier.put(problem.getInitialState(), initialNode);
 
-        PriorityQueue<ISNode> frontierDeepCopy = new PriorityQueue<>(frontier);
         do
         {
             if (frontier.isEmpty())
@@ -29,7 +28,7 @@ public class SMAStar {
                 System.out.println(nExplored);
                 return;
             }
-            System.out.println(GeneralSearchAlgorithmInformed.frontierToString(frontierDeepCopy));
+            System.out.println(GeneralSearchAlgorithmInformed.frontierToString(frontier));
             SMAStarNode node = frontier.remove();
             inFrontier.remove(node.getState());
 
@@ -60,7 +59,6 @@ public class SMAStar {
                     }
 
                     frontier = shrinkFrontier(frontier, mem, inFrontier);
-                    frontierDeepCopy = new PriorityQueue<>(frontier);
                 }
                 
             }
@@ -165,8 +163,7 @@ public class SMAStar {
                 double leastF = ndParent.getForgotten().first().getFCost();
                 ndParent.setFCost(leastF);
                 boolean needsReinsertion = true;
-                PriorityQueue<SMAStarNode> frontierDeepCopy = new PriorityQueue<>(frontier);
-                for (SMAStarNode nx : frontierDeepCopy)
+                for (SMAStarNode nx : frontier)
                 {
                     if (ancestors(nx).contains(ndParent))
                     {
@@ -187,27 +184,21 @@ public class SMAStar {
 
     public static SMAStarNode getWorstLeafNode(PriorityQueue<SMAStarNode> frontier)
     {
-        PriorityQueue<SMAStarNode> frontierDeepCopy = new PriorityQueue<>(frontier);
         Optional<SMAStarNode> worstLeafNode = Optional.empty();
-        do 
+        for (SMAStarNode node : frontier) 
         {
-            SMAStarNode node = frontierDeepCopy.remove();
             if (node.getIsLeaf())
             {
                 if (worstLeafNode.isEmpty())
                 {
                     worstLeafNode = Optional.of(node);
                 }
-                else
+                else if (node.getFCost() >= worstLeafNode.get().getFCost())
                 {
-                    if (node.getFCost() >= worstLeafNode.get().getFCost())
-                    {
-                        worstLeafNode = Optional.of(node);
-                    }
+                    worstLeafNode = Optional.of(node);
                 }
-            }
-            
-        } while (!frontierDeepCopy.isEmpty());
+            }      
+        } 
         return worstLeafNode.get();
     }
 
