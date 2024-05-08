@@ -1,5 +1,6 @@
 package Tests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -54,5 +55,13 @@ public class WorldTest {
         {
             assertTrue(states.contains(state));    
         }
+    }
+
+    @Test
+    public void testNoOrigin()
+    {
+        World world = new World(3, "1:0", "1:45");
+
+        assertFalse(world.getCoordinates().containsKey("(0:0)"));
     }
 }
