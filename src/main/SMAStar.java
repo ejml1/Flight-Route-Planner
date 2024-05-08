@@ -81,14 +81,11 @@ public class SMAStar {
         {
             if (nd.getForgotten().contains(ns))
             {
-                nd.getForgotten().remove(ns);
+                nd.removeForgotten(nd);
             }
-            else
+            else if (!GeneralSearchAlgorithm.goalTest(ns.getState(), goal) && ns.getDepth() == mem)
             {
-                if (!GeneralSearchAlgorithm.goalTest(ns.getState(), goal) && ns.getDepth() == mem)
-                {
-                    ns.setFCost(INF);
-                }
+                ns.setFCost(INF);
             }
             ns.setIsLeaf(true);
             SMAStarNode nsParent = (SMAStarNode) ns.getParent().get();
@@ -185,8 +182,10 @@ public class SMAStar {
     public static SMAStarNode getWorstLeafNode(PriorityQueue<SMAStarNode> frontier)
     {
         Optional<SMAStarNode> worstLeafNode = Optional.empty();
-        for (SMAStarNode node : frontier) 
+        PriorityQueue<SMAStarNode> frontierCopy = new PriorityQueue<>(frontier);
+        while (!frontierCopy.isEmpty())
         {
+            SMAStarNode node = frontierCopy.remove();
             if (node.getIsLeaf())
             {
                 if (worstLeafNode.isEmpty())

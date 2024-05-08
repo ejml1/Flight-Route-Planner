@@ -98,10 +98,12 @@ public class GeneralSearchAlgorithmInformed {
      */
     public static String frontierToString(PriorityQueue<? extends ISNode> frontier)
     {
+        PriorityQueue<? extends ISNode> frontierDeepCopy = new PriorityQueue<ISNode>(frontier);
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        for (ISNode node : frontier)
+        while(!frontierDeepCopy.isEmpty())
         {
+            ISNode node = frontierDeepCopy.remove();
             sb.append(node.getState().toString());
             sb.append(String.format("%.3f", node.getFCost()));
             sb.append(",");
