@@ -96,7 +96,7 @@ public class GeneralSearchAlgorithmInformed {
      * @param frontier A priority queue of nodes
      * @return A string representation of the frontier
      */
-    public static String frontierToString(PriorityQueue<ISNode> frontier)
+    public static String frontierToString(PriorityQueue<? extends ISNode> frontier)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
