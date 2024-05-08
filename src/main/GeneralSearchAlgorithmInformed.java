@@ -22,8 +22,6 @@ public class GeneralSearchAlgorithmInformed {
         HashMap<Coordinate, ISNode> inFrontier = new HashMap<Coordinate, ISNode>();
         inFrontier.put(problem.getInitialState(), initialNode);
 
-        PriorityQueue<ISNode> frontierDeepCopy = new PriorityQueue<ISNode>(frontier);
-
         Set<Coordinate> explored = new HashSet<Coordinate>();
         do
         {         
@@ -33,7 +31,7 @@ public class GeneralSearchAlgorithmInformed {
                 System.out.println(nExplored);
                 return;
             }
-            System.out.println(frontierToString(frontierDeepCopy));
+            System.out.println(frontierToString(frontier));
 
             ISNode node = frontier.remove();
             inFrontier.remove(node.getState());
@@ -60,7 +58,6 @@ public class GeneralSearchAlgorithmInformed {
                     frontier.add(state);
                     inFrontier.put(state.getState(), state);
                 }
-                frontierDeepCopy = new PriorityQueue<ISNode>(frontier);
             }
         } while (true);
     }
@@ -95,18 +92,16 @@ public class GeneralSearchAlgorithmInformed {
     }
 
     /**
-     * Convert the frontierString to a string
-     * @param frontierString A LinkedList that contains the states of the nodes in the frontier
-     * @param frontierScoreString A ordered set that contains the f-cost of the nodes in the frontier
-     * @return A string representation of the frontierString
+     * Convert the frontier to a string representation of the states
+     * @param frontier A priority queue of nodes
+     * @return A string representation of the frontier
      */
-    public static String frontierToString(PriorityQueue<ISNode> frontierDeepCopy)
+    public static String frontierToString(PriorityQueue<ISNode> frontier)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        while (!frontierDeepCopy.isEmpty())
+        for (ISNode node : frontier)
         {
-            ISNode node = frontierDeepCopy.remove();
             sb.append(node.getState().toString());
             sb.append(String.format("%.3f", node.getFCost()));
             sb.append(",");
