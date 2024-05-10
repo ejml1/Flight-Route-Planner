@@ -63,9 +63,10 @@ public class GeneralSearchAlgorithmInformed {
     }
 
     /**
-     * 
      * @param node Parent node
      * @param state New state for the node
+     * @param goal Goal state
+     * @param algo Algorithm to use (BestF, AStar)
      * @return New node with the new state
      */
     public static ISNode makeNode(Optional<ISNode> node, Coordinate state, Coordinate goal, String algo)

@@ -1,6 +1,5 @@
 package main;
 import java.util.Optional;
-import java.util.TreeSet;
 
 public class GeneralSearchAlgorithm {
 
